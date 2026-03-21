@@ -1,11 +1,13 @@
+# Debian-based JDK pour Render
 FROM eclipse-temurin:21-jdk
+
 LABEL maintainer="MV"
 LABEL org.opencontainers.image.source="https://github.com/MathiasVadot/sensor-data-bridge/"
 LABEL org.opencontainers.image.description="Receives sensor data over TTN and forwards it to sensor.community"
 LABEL org.opencontainers.image.licenses="MIT"
 
 # Installer outils nécessaires
-RUN apk add --no-cache bash unzip curl git
+RUN apt-get update && apt-get install -y bash unzip curl git && rm -rf /var/lib/apt/lists/*
 
 # Copier projet
 WORKDIR /opt/sensor-data-bridge

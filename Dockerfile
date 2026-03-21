@@ -1,8 +1,8 @@
 # ---------- Stage 1: Build ----------
-FROM openjdk:17-jdk-slim-bullseye AS builder
+FROM openjdk:17-jdk-slim AS builder
 WORKDIR /app
 
-# Installer git pour cloner le repo
+# Installer git pour cloner le repo et unzip pour gradle wrapper
 RUN apt-get update && apt-get install -y git unzip && rm -rf /var/lib/apt/lists/*
 
 # Cloner le repo directement depuis GitHub
@@ -15,7 +15,7 @@ RUN chmod +x ./gradlew
 RUN ./gradlew build -x test --no-daemon
 
 # ---------- Stage 2: Runtime ----------
-FROM openjdk:17-jdk-slim-bullseye
+FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copier le JAR généré depuis l'étape précédente

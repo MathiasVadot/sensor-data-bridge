@@ -1,3 +1,5 @@
+
+FROM eclipse-temurin:21-jdk-alpine
 LABEL maintainer="MV"
 LABEL org.opencontainers.image.source="https://github.com/MathiasVadot/sensor-data-bridge/"
 LABEL org.opencontainers.image.description="Receives sensor data over TTN and forwards it to sensor.community"

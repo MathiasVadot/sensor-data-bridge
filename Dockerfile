@@ -9,10 +9,10 @@ RUN git clone https://github.com/MathiasVadot/sensor-data-bridge.git .
 
 RUN chmod +x ./gradlew
 
-# ✅ bon chemin
+# bon chemin
 RUN sed -i '/com.palantir.git-version/d' sensor-data-bridge/build.gradle
 
-# ✅ build du module
+# build du module
 RUN ./gradlew :sensor-data-bridge:installDist -x test --no-daemon
 
 # ---------- Stage 2: Runtime ----------

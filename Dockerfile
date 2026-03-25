@@ -1,29 +1,30 @@
-# ---------- Stage 1: Build ----------
-FROM eclipse-temurin:21-jdk-jammy AS builder
+# ---------- Build ----------
+FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /app
 
+# Installer git (important pour ton plugin)
 RUN apt-get update && apt-get install -y git
 
+# Cloner le projet
 RUN git clone https://github.com/MathiasVadot/sensor-data-bridge.git .
 
-RUN chmod +x ./gradlew
+# Rendre gradlew exécutable
+RUN chmod +x gradlew
 
-# bon chemin
+# Supprimer le plugin git-version (qui casse sans .git)
 RUN sed -i '/com.palantir.git-version/d' sensor-data-bridge/build.gradle
 
-# build du module
+# Build du bon module
 RUN ./gradlew :sensor-data-bridge:installDist -x test --no-daemon
 
-# ---------- Stage 2: Runtime ----------
-FROM eclipse-temurin:21.0.8_9-jre-alpine
 
-WORKDIR /opt
+# ---------- Runtime ----------
+FROM eclipse-temurin:21-jre
 
-COPY --from=builder /app/sensor-data-bridge/build/distributions/sensor-data-bridge.tar .
+WORKDIR /app
 
-RUN tar -xvf sensor-data-bridge.tar
+# Copier le build
+COPY --from=builder /app/sensor-data-bridge/build/install/sensor-data-bridge /app
 
-WORKDIR /opt/sensor-data-bridge
-
-ENTRYPOINT ["/opt/sensor-data-bridge/bin/sensor-data-bridge"]
+ENTRYPOINT ["bin/sensor-data-bridge"]

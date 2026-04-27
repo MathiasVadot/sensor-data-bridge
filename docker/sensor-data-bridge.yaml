@@ -5,7 +5,7 @@ ttn:
   identity_server_timeout: 30
   apps:
   - name: "sensorcommunity-mkr1310"
-    key: "7F4PO63TKAF7I24UP6HHR33GKHWOA5NKW25ZZNA"
+    key: "secret_key_begin_with_NNSXS_generate_on_TTN_application"
     decoder:
       encoding: "JSON"
       properties:
